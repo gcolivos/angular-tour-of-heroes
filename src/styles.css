@@ -1,1 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
+html {
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/4a/Cyberpunk_city_%284065413356%29.jpg');
+}
