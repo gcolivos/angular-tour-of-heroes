@@ -1,4 +1,7 @@
-<p>
-  {{hero}}
-</p> 
-<!-- Trying to figure out how to get the hero property to show, stop point -->
+<h2>{{hero.name | uppercase}} Details</h2>
+<div><span>id: </span>{{hero.id}}</div>
+<div>
+    <label>name:
+      <input [(ngModel)]="hero.name" placeholder="name">
+    </label>
+</div>
