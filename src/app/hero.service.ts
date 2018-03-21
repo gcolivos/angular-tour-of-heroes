@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Hero } from './hero';
-// import {HEROES} from './mock-heroes';
-// deleting that but not sure how to replace it yet
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' });
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 }
 
 @Injectable()
@@ -71,9 +69,9 @@ export class HeroService {
   }
 
   /** POST: add a new hero to the server */
-//   HeroService.addHero() differs from updateHero in two ways.
-// it calls HttpClient.post() instead of put().
-// it expects the server to generates an id for the new hero, which it returns in the Observable<Hero> to the caller.
+  //   HeroService.addHero() differs from updateHero in two ways.
+  // it calls HttpClient.post() instead of put().
+  // it expects the server to generates an id for the new hero, which it returns in the Observable<Hero> to the caller.
 
   addHero(hero: Hero): Observable<Hero> {
     return this.http.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
@@ -83,10 +81,10 @@ export class HeroService {
   }
 
   /** DELETE: delete the hero from the server */
-//   it calls HttpClient.delete.
-// the URL is the heroes resource URL plus the id of the hero to delete
-// you don't send data as you did with put and post.
-// you still send the httpOptions.
+  //   it calls HttpClient.delete.
+  // the URL is the heroes resource URL plus the id of the hero to delete
+  // you don't send data as you did with put and post.
+  // you still send the httpOptions.
   deleteHero(hero: Hero | number): Observable<Hero> {
     const id = typeof hero === 'number' ? hero : hero.id;
     const url = `${this.heroesUrl}/${id}`;
@@ -94,6 +92,17 @@ export class HeroService {
     return this.http.delete<Hero>(url, httpOptions).pipe(
       tap(_ => this.log(`deleted hero id=${id}`)),
       catchError(this.handleError<Hero>('deleteHero'))
+    );
+  }
+  // GET heroes whose name includes search term
+  searchHeroes(term: string): Observable<Hero[]> {
+    if (!term.trim()) {
+      // if not search term, return an empty array
+      return of([]);
+    }
+    return this.http.get<Hero[]>(`api/heroes/?name=${term}`).pipe(
+      tap(_ => this.log(`found heroes matching "${term}"`)),
+      catchError(this.handleError<Hero[]>(`searchHeroes`, []))
     );
   }
 }
